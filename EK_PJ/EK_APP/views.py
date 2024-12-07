@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
@@ -20,12 +21,15 @@ class EK_Champ_RegisterationView(APIView):
             # Check if the username already exists
             if EKPJ.objects.filter(username=serializer_post_project.data.get("username")).exists():
                 return Response({"Notification": "Username already exists!"}, status=status.HTTP_400_BAD_REQUEST)
+            
             # Create a new user
             EKPJ.objects.create(
                 username=serializer_post_project.data.get("username"),
                 password=serializer_post_project.data.get("password"),
             )
             return Response({"Notification": "Your information is Added!"}, status=status.HTTP_201_CREATED)
+
+        # Handle invalid data
         return Response({"error": "Invalid data", "details": serializer_post_project.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -40,6 +44,8 @@ class EK_Champ_LoginView(APIView):
             if user and user.password == serializer_post_project.data.get("password"):
                 return Response({"Notification": "Your Login is Successful!"}, status=status.HTTP_200_OK)
             return Response({"error": "Invalid username or password!"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Handle invalid data
         return Response({"error": "Invalid data", "details": serializer_post_project.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -86,23 +92,20 @@ class Driver_Overview(APIView):
         return Response(data)
 
 
+
 class Driver_Create(APIView):
-    serializer_project = DriverSerializer
-
     def post(self, request):
-        # Ensure the data is not a list, otherwise return an error
-        if isinstance(request.data, list):
-            driver_data = request.data[0]  # If it's a list, pick the first element
-        else:
-            driver_data = request.data  # Assume it's a dictionary if it's not a list
+        # Check if the driver ID already exists
+        driver_id = request.data.get('id')
+        if Driver.objects.filter(id=driver_id).exists():
+            return Response({"error": "Driver ID already exists!"}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = DriverSerializer(data=driver_data)
+        serializer = DriverSerializer(data=request.data)
         if serializer.is_valid():
-            driver = serializer.save()  # Save the new driver to the database
-            return Response({"message": "Driver created successfully", "driver": serializer.data}, status=201)
-
-        return Response({"error": "Invalid data", "details": serializer.errors}, status=400)
-
+            driver = serializer.save()  # Save the new driver
+            return Response({"message": "Driver created successfully", "driver": serializer.data}, status=status.HTTP_201_CREATED)
+        
+        return Response({"error": "Invalid data", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class Driver_Edit(APIView):
     def put(self, request, pk):
@@ -111,8 +114,8 @@ class Driver_Edit(APIView):
         except Driver.DoesNotExist:
             return Response({"error": "Driver not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Extract the nested driver data
-        driver_data = request.data.get("driver", {})
+        # If the request data has the "driver" key, use it, otherwise use the whole request body
+        driver_data = request.data.get("driver", request.data)
 
         serializer = DriverSerializer(driver, data=driver_data, partial=True)
         if serializer.is_valid():
