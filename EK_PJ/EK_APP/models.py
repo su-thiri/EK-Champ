@@ -1,31 +1,16 @@
 from django.db import models
 
+# Create your models here.
 class EKPJ(models.Model):
-    username = models.CharField(max_length=200, unique=True)
-    password = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.username
-
-    class Meta:
-        verbose_name = "EKPJ User"
-        verbose_name_plural = "EKPJ Users"
-
+    username=models.CharField(max_length=200)
+    password=models.CharField(max_length=200)
 
 class EKPJLogin(models.Model):
-    username = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.username
-
-    class Meta:
-        verbose_name = "EKPJ Login"
-        verbose_name_plural = "EKPJ Logins"
-
+    username=models.CharField(max_length=200)
+    password=models.CharField(max_length=200)
 
 class Driver(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)  # Allow users to input their own ID, ensuring uniqueness
+    id = models.IntegerField(primary_key=True, unique=True)
     name_en = models.CharField(max_length=255)
     name_th = models.CharField(max_length=255)
     nickname = models.CharField(max_length=255)
@@ -36,7 +21,3 @@ class Driver(models.Model):
 
     def __str__(self):
         return self.name_en
-
-    class Meta:
-        verbose_name = "Driver"
-        verbose_name_plural = "Drivers"

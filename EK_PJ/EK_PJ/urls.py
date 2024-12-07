@@ -19,15 +19,20 @@ from django.urls import path
 from EK_APP import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from EK_APP.views import DriverViewSet
+
+router = DefaultRouter()
+router.register(r'drivers', DriverViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('EK_Champ_Register/', views.EK_Champ_RegisterationView.as_view()),
     path('EK_Champ_Login/', views.EK_Champ_LoginView.as_view()),
-    path('drivers/overview/', views.Driver_Overview.as_view()),
-    path('drivers/create/', views.Driver_Create.as_view()),
-    path('drivers/edit/<int:pk>/', views.Driver_Edit.as_view()),
-    path('drivers/overview/?search=name_of_driver', views.Driver_Edit.as_view()),
+    path('api/', include(router.urls)),
+    path('api/drivers/list/', views.driver_list), 
+    path('api/drivers/edit/<int:pk>/', views.edit_driver),
 ]
 
 if settings.DEBUG:
