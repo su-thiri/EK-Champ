@@ -17,31 +17,30 @@ class EK_Champ_RegisterationView(APIView):
     def post(self, request):
         serializer_post_project = EKPJSerializer(data=request.data)
         if serializer_post_project.is_valid():
+            # Check if the username already exists
+            if EKPJ.objects.filter(username=serializer_post_project.data.get("username")).exists():
+                return Response({"Notification": "Username already exists!"}, status=status.HTTP_400_BAD_REQUEST)
+            # Create a new user
             EKPJ.objects.create(
                 username=serializer_post_project.data.get("username"),
                 password=serializer_post_project.data.get("password"),
             )
+            return Response({"Notification": "Your information is Added!"}, status=status.HTTP_201_CREATED)
+        return Response({"error": "Invalid data", "details": serializer_post_project.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        project = EKPJ.objects.filter(username=request.data["username"]).values()
-        return Response({"Notification": "Your information is Added!", "Project": project})
 
 class EK_Champ_LoginView(APIView):
     serializer_project = EKPJSerializerLogin
 
-    def get(self, request):
-        info = EKPJLogin.objects.all().values()
-        return Response({"Your Account Info": info})
-
     def post(self, request):
         serializer_post_project = EKPJSerializerLogin(data=request.data)
         if serializer_post_project.is_valid():
-            EKPJ.objects.create(
-                username=serializer_post_project.data.get("username"),
-                password=serializer_post_project.data.get("password"),
-            )
-
-        project = EKPJ.objects.filter(username=request.data["username"]).values()
-        return Response({"Notification": "Your Login is Successful!", "Project": project})
+            # Check if the user exists and passwords match
+            user = EKPJ.objects.filter(username=serializer_post_project.data.get("username")).first()
+            if user and user.password == serializer_post_project.data.get("password"):
+                return Response({"Notification": "Your Login is Successful!"}, status=status.HTTP_200_OK)
+            return Response({"error": "Invalid username or password!"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid data", "details": serializer_post_project.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Driver_Overview(APIView):
@@ -86,11 +85,12 @@ class Driver_Overview(APIView):
 
         return Response(data)
 
+
 class Driver_Create(APIView):
     serializer_project = DriverSerializer
 
     def post(self, request):
-        # Check if the request data is a list (likely the case based on your error)
+        # Ensure the data is not a list, otherwise return an error
         if isinstance(request.data, list):
             driver_data = request.data[0]  # If it's a list, pick the first element
         else:
@@ -102,6 +102,7 @@ class Driver_Create(APIView):
             return Response({"message": "Driver created successfully", "driver": serializer.data}, status=201)
 
         return Response({"error": "Invalid data", "details": serializer.errors}, status=400)
+
 
 class Driver_Edit(APIView):
     def put(self, request, pk):
