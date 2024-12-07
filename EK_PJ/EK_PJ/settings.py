@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
+# Add this to specify where uploaded files should be stored
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_URL = '/media/'  # URL where files will be accessible in the browser
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory where files will be stored on the server
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

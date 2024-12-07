@@ -17,9 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from EK_APP import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('EK_Champ_Register/',views.EK_Champ_RegisterationView.as_view()),
-    path('EK_Champ_Login/',views.EK_Champ_LoginView.as_view())
+    path('EK_Champ_Register/', views.EK_Champ_RegisterationView.as_view()),
+    path('EK_Champ_Login/', views.EK_Champ_LoginView.as_view()),
+    path('drivers/overview/', views.Driver_Overview.as_view()),
+    path('drivers/create/', views.Driver_Create.as_view()),
+    path('drivers/edit/<int:pk>/', views.Driver_Edit.as_view()),
+    path('drivers/overview/?search=name_of_driver', views.Driver_Edit.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
