@@ -30,6 +30,7 @@ body {
     text-decoration: none;
     color: black;
     font-size: 1rem;
+    
 }
 .btn {
     padding: 0.5rem 1rem;
@@ -235,3 +236,133 @@ body {
     width: 100%;
     padding: 0 2rem;
 }
+
+
+/*  driveritem  */
+
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #ffb6c1 0%, #dc3545 100%);
+}
+
+.back-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.75rem 2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.page-title {
+    padding: 2rem;
+    font-size: 2.5rem;
+    color: #000;
+}
+
+.white-line {
+    width: 100%;
+    height: 3px; /* Thickness of the line */
+    background-color: white;
+    margin: 0 auto 20px auto;
+}
+
+.search-container {
+    position: relative;
+    width: 300px;
+    height: 40px;
+    background-color: #f6c6c6;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    font-family: Arial, sans-serif;
+}
+
+/* Search Input */
+.search-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #000; 
+    padding-left: 25px; 
+}
+
+/* Search Icon */
+.search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    color: #000; 
+}
+
+/* Show Clear Icon when typing */
+.search-input:not(:placeholder-shown) + .clear-icon {
+    display: block;
+}
+
+/* Button Row */
+.button-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+
+
+/* Individual Button Style */
+.button {
+    width: 15%;
+    height: 100px;
+    background-color: #f7d1d1; /* Light pink background */
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 100px auto;
+    padding: 20px;
+}
+
+/* Hover Effect for Buttons */
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Back Button */
+.back-button {
+    width: 100px;
+    height: 40px;
+    background-color: #f7d1d1; /* Same light pink */
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover Effect for Back Button */
+.back-button:hover {
+    transform: scale(1.1);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
