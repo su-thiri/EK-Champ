@@ -12,4 +12,4 @@ class EKPJSerializerLogin(serializers.Serializer):
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = '__all__'
+        fields = '__all__'  # This will include all fields defined in the Driver model

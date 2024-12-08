@@ -28,11 +28,14 @@ router.register(r'drivers', DriverViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('EK_Champ_Register/', views.EK_Champ_RegisterationView.as_view()),
+    path('api/register/get/', views.EK_Champ_GetView.as_view(), name='drivers-get'),
+    path('api/register/post/', views.EK_Champ_PostView.as_view(), name='drivers-post'),
     path('EK_Champ_Login/', views.EK_Champ_LoginView.as_view()),
-    path('api/', include(router.urls)),
-    path('api/drivers/list/', views.driver_list), 
-    path('api/drivers/edit/<int:pk>/', views.edit_driver),
+
+    path('api/drivers/list/', views.DriverListView.as_view(), name='driver-list'),  # URL for GET (list drivers)
+    path('api/drivers/create/', views.DriverCreateView.as_view(), name='driver-create'),  # URL for POST (create driver)
+    # For editing a driver
+    path('api/drivers/edit/<int:driver_id>/', views.edit_driver, name='edit_driver'),
 ]
 
 if settings.DEBUG:
