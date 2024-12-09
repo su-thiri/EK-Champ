@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class EKPJ(models.Model):
@@ -15,9 +16,14 @@ class Driver(models.Model):
     name_th = models.CharField(max_length=255)
     nickname = models.CharField(max_length=255)
     dob = models.DateField()
-    qr_code = models.IntegerField()  # You might want to consider a `CharField` for QR codes if needed
+    qr_code = models.IntegerField()  # Changed from IntegerField to CharField
     age = models.IntegerField()
     profile_picture = models.ImageField(upload_to='driver_images/', null=True, blank=True)
 
     def __str__(self):
-        return self.name_en  # String representation of the object
+        return self.name_en
+
+
+class SearchLog(models.Model):
+    term = models.CharField(max_length=255)
+    searched_at = models.DateTimeField(auto_now_add=True)

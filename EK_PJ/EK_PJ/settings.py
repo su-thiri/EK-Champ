@@ -46,11 +46,31 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '1000/day',  # Add your throttle rates here if needed
+    },
+}
+
+# Disable CSRF for API views
+CSRF_COOKIE_SECURE = False  # Optional: Use only if you're working locally, make sure this is True for production
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']  # Trust requests from local host
+
+# Disable CSRF protection for all views
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # Keep this line, but disable CSRF checks below
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
