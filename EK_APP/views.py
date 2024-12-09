@@ -17,6 +17,9 @@ def register(request):
 def driver(request):
     return render(request, 'driveritem.html')
 
+def welcome(request):
+    return render(request, 'welcome.html')
+
 
 
 class EK_Champ_RegisterationView(APIView):

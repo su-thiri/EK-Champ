@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyKart Menu</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'img/EasyKart.png' %}">
+        </div>
+
+        <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search...">
+        <span class="search-icon">&#128269;</span> <!-- Unicode for magnifying glass -->
+        <span class="clear-icon">&#10006;</span> <!-- Unicode for X -->
+    </div>
+    </header>
+
+    <div class="menu-container">
+        <div class="menu-item">Championship Items</div>
+        <div class="menu-item">Round Items</div>
+        <div class="menu-item">Team Items</div>
+        <div class="menu-item">Driver Items</div>
+        <div class="menu-item">Race Control</div>
+    </div>
+</body>
+</html>
