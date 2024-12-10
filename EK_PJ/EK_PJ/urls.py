@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/drivers/list/?sort_by=age&order=desc', views.DriverListView.as_view(),name ='filter_by_age'),
     path('api/drivers/list/?sort_by=name_th&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
     path('api/drivers/list/?sort_by=nickname&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
-
+    path('api/drivers/list/?search=value', views.DriverListView.as_view(),name ='filter_by_qr_code'),
 ]
 
 if settings.DEBUG:
