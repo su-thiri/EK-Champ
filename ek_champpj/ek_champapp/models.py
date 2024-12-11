@@ -15,17 +15,14 @@ class Round(models.Model):
     race_duration_time = models.CharField(max_length=100)
     pitlane = models.CharField(max_length=100)
 
-
 class Team_numbers(models.Model):
     team_number_id = models.CharField(max_length=100)
     championship_id = models.CharField(max_length=100)
     team_id = models.CharField(max_length=100)
     team_number = models.CharField(max_length=100)
 
-
-
 class Team_in_round(models.Model):
-    id = models.CharField(max_length=100)
+    id = models.IntegerField(primary_key=True)
     championship = models.CharField(max_length=100)
     round = models.CharField(max_length=100)
     team_name = models.CharField(max_length=100)
