@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Driver
+from .models import Driver, Round
 
 class EKPJSerializer(serializers.Serializer):
     username=serializers.CharField(label="Enter Your Username")
@@ -12,4 +12,9 @@ class EKPJSerializerLogin(serializers.Serializer):
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
+        fields = '__all__'  # This will include all fields defined in the Driver model
+
+class RoundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Round
         fields = '__all__'  # This will include all fields defined in the Driver model

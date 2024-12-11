@@ -32,10 +32,46 @@ urlpatterns = [
     path('api/register/post/', views.EK_Champ_PostView.as_view(), name='drivers-post'),
     path('EK_Champ_Login/', views.EK_Champ_LoginView.as_view()),
 
+<<<<<<< Updated upstream
     path('api/drivers/list/', views.DriverListView.as_view(), name='driver-list'),  # URL for GET (list drivers)
     path('api/drivers/create/', views.DriverCreateView.as_view(), name='driver-create'),  # URL for POST (create driver)
     # For editing a driver
     path('api/drivers/edit/<int:driver_id>/', views.edit_driver, name='edit_driver'),
+=======
+    # Registration
+    path('api/register/get/', views.RegisterGetView.as_view(), name='register-get'),
+    path('api/register/post/', views.RegisterPostView.as_view(), name='register-post'),
+
+    # Login
+    path('api/login/', views.LoginView.as_view(), name='login'),
+
+    # Driver Endpoints
+    path('api/drivers/list/', views.DriverListView.as_view(), name='driver-list'),
+    path('api/drivers/create/', views.DriverCreateView.as_view(), name='driver-create'),
+    path('api/drivers/edit/?key=value/', views.edit_driver, name='edit-driver'),
+    path('api/drivers/delete/?key=value/', views.delete_driver, name='delete-driver'),
+    path('api/drivers/list/?sort_by=name_en&order=asc', views.DriverListView.as_view(), name ='filter_by_name_en'),
+    path('api/drivers/list/?sort_by=name_th&order=asc', views.DriverListView.as_view(),name ='filter_by_name_th'),
+    path('api/drivers/list/?sort_by=dob&order=asc', views.DriverListView.as_view(),name ='filter_by_bod'),
+    path('api/drivers/list/?sort_by=id&order=asc', views.DriverListView.as_view(),name ='filter_by_id'),
+    path('api/drivers/list/?sort_by=age&order=desc', views.DriverListView.as_view(),name ='filter_by_age'),
+    path('api/drivers/list/?sort_by=name_th&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
+    path('api/drivers/list/?sort_by=nickname&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
+    path('api/drivers/list/?search=value', views.DriverListView.as_view(),name ='search'),
+    # List and filter rounds
+    path('api/rounds/list/', views.RoundListView.as_view(), name='round-list'),
+    
+    # Create a new round
+    path('api/rounds/create/', views.RoundCreateView.as_view(), name='round-create'),
+    
+    # Edit an existing round by ID
+    path('api/rounds/edit/<int:pk>/', views.edit_round, name='edit-round-by-round-id'),
+    
+    # Delete an existing round by ID
+    path('api/rounds/delete/<int:pk>/', views.delete_round, name='delete-round-by-round-id'),
+    path('api/rounds/list/?search=value', views.delete_round, name='search-round'),
+    path('api/rounds/list/?sort_by=<field>&order=<order>', views.RoundListView.as_view(), name='filter-by-round-column-in-order-asc-or-desc'),
+>>>>>>> Stashed changes
 ]
 
 if settings.DEBUG:
