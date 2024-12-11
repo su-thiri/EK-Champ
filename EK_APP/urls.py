@@ -7,4 +7,5 @@ urlpatterns =[
     path('register/', views.register, name='register'),
     path('driver/', views.driver, name='driver'),
     path('welcome/', views.welcome, name='welcome'),
+    path('race/', views.race, name='race'),
 ]

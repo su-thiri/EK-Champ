@@ -85,7 +85,7 @@ body {
 .submit-btn:hover {
     background-color: #343a40;
 }
-/* for register */    
+/* register */    
 
 header {
     background-color: rgba(255, 255, 255, 0.1);
@@ -235,12 +235,6 @@ input::placeholder {
 
 /*  driveritem  */
 
-
-body {
-    min-height: 100vh;
-    background: linear-gradient(180deg, #ffb6c1 0%, #dc3545 100%);
-}
-
 .back-button {
     position: fixed;
     bottom: 2rem;
@@ -264,7 +258,7 @@ body {
 
 .white-line {
     width: 100%;
-    height: 3px; /* Thickness of the line */
+    height: 3px;
     background-color: white;
     margin: 0 auto 20px auto;
 }
@@ -281,7 +275,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Search Input */
 .search-input {
     flex: 1;
     height: 100%;
@@ -293,7 +286,6 @@ body {
     padding-left: 25px; 
 }
 
-/* Search Icon */
 .search-icon {
     position: absolute;
     left: 10px;
@@ -301,12 +293,10 @@ body {
     color: #000; 
 }
 
-/* Show Clear Icon when typing */
 .search-input:not(:placeholder-shown) + .clear-icon {
     display: block;
 }
 
-/* Button Row */
 .button-row {
     display: flex;
     justify-content: space-around;
@@ -314,17 +304,15 @@ body {
 }
 
 
-
-/* Individual Button Style */
 .button {
     width: 15%;
     height: 100px;
-    background-color: #f7d1d1; /* Light pink background */
+    background-color: #f7d1d1;
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -333,17 +321,15 @@ body {
     padding: 20px;
 }
 
-/* Hover Effect for Buttons */
 .button:hover {
     transform: scale(1.05);
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Back Button */
 .back-button {
     width: 100px;
     height: 40px;
-    background-color: #f7d1d1; /* Same light pink */
+    background-color: #f7d1d1; 
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -353,21 +339,12 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover Effect for Back Button */
 .back-button:hover {
     transform: scale(1.1);
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* welcome page */
-
-body {
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #1a1a1a, #9ab534);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
 
 .header {
     margin-bottom: 40px;
@@ -425,4 +402,179 @@ body {
 }
 
 
+/* racecontrol  */
 
+body {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #000000, #4d5215, #9aaa22);
+    color: white;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.logo {
+    height: 50px;
+}
+
+.search-bar {
+    position: relative;
+    width: 300px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+}
+
+.back-btn {
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+}
+
+.championship-section {
+    text-align: center;
+    margin: 40px 0;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #ffeb3b;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+
+.input-group {
+    margin: 20px 0;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.input-group input {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.1rem;
+}
+
+.register-btn {
+    margin-top: 20px;
+    padding: 12px 40px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.race-status-section {
+    text-align: center;
+    margin: 60px 0;
+}
+
+.timer {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    font-family: monospace;
+}
+
+.status {
+    font-size: 1.5rem;
+    color: #ffeb3b;
+}
+
+.control-buttons {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.control-btn {
+    padding: 15px;
+    border-radius: 15px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 120px;
+}
+
+.control-btn .icon {
+    font-size: 1.5rem;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .control-buttons {
+        position: static;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .title-section {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 300px;
+    }
+}

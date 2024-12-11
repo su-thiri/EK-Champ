@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyKart Race Control Panel</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'img/EasyKart.png' %}">
+        </div>
+
+        <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search...">
+        <span class="search-icon">&#128269;</span> 
+        <span class="clear-icon">&#10006;</span>
+    </div>
+    </header>
+
+        <main>
+            <div class="title-section">
+                <h1>Race Control Panel</h1>
+                <button class="back-btn">Back</button>
+            </div>
+
+            <div class="white-line"></div>
+
+            <section class="championship-section">
+                <h2>Select Championship & Round</h2>
+                <div class="input-group">
+                    <label for="championship">Championship</label>
+                    <input type="text" id="championship">
+                </div>
+                <div class="input-group">
+                    <label for="round">Round</label>
+                    <input type="text" id="round">
+                </div>
+                <button class="register-btn">Register</button>
+            </section>
+
+            <div class="white-line"></div>
+
+            <section class="race-status-section">
+                <div class="timer">00:00:00</div>
+                <h2>Race Status</h2>
+                <div class="status">Finished</div>
+            </section>
+
+            <div class="control-buttons">
+                <button class="control-btn restart">
+                    <span class="icon">↻</span>
+                    Restart race
+                </button>
+                <button class="control-btn pause">
+                    <span class="icon">⏸</span>
+                    Pause Race
+                </button>
+                <button class="control-btn end">
+                    <span class="icon">⚠</span>
+                    End Race
+                </button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+

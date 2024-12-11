@@ -20,6 +20,9 @@ def driver(request):
 def welcome(request):
     return render(request, 'welcome.html')
 
+def race(request):
+    return render(request, 'racecontrol.html')
+
 
 
 class EK_Champ_RegisterationView(APIView):
