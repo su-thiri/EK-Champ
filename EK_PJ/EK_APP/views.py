@@ -4,124 +4,155 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
-<<<<<<< Updated upstream
 from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
-from .models import Driver
-from .serializers import DriverSerializer
-=======
 from .models import Driver, SearchLog, Round
 from .serializers import DriverSerializer, RoundSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from rest_framework.decorators import api_view, permission_classes
+from django.db.models import Q
+from .models import Driver, SearchLog
+from .serializers import DriverSerializer
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework_simplejwt.tokens import RefreshToken
->>>>>>> Stashed changes
+from django.contrib.auth.models import User
 
 
+
+# View to fetch account info (GET request)
 class EK_Champ_GetView(APIView):
     def get(self, request):
-        info = EKPJ.objects.all().values()
-        return Response({"Your Account Info": info})
+        # Fetch account info (if the user is authenticated)
+        if request.user.is_authenticated:
+            info = EKPJ.objects.all().values()  # Modify this as per your logic
+            return Response({"Your Account Info": info})
+        else:
+            return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
 
-# View for POST requests
+
+# View to handle POST requests for creating a user (registering)
+@method_decorator(csrf_exempt, name='dispatch')
 class EK_Champ_PostView(APIView):
     def post(self, request):
+        # Use serializer to validate incoming data
         serializer_post_project = EKPJSerializer(data=request.data)
         if serializer_post_project.is_valid():
-            EKPJ.objects.create(
-                username=serializer_post_project.validated_data.get("username"),
-                password=serializer_post_project.validated_data.get("password"),
-            )
-            return Response({"message": "Account created successfully!"})
-        return Response(serializer_post_project.errors, status=400)
+            # Create a new user with hashed password
+            username = serializer_post_project.validated_data.get("username")
+            password = serializer_post_project.validated_data.get("password")
+            
+            # Check if the user already exists
+            if User.objects.filter(username=username).exists():
+                return Response({"error": "User with this username already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
+            # Create new user and hash the password
+            user = User.objects.create_user(username=username, password=password)
+            user.save()
+
+            return Response({"message": "Account created successfully!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer_post_project.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# View for login (POST request) to authenticate the user and provide JWT token
 class EK_Champ_LoginView(APIView):
-    serializer_project = EKPJSerializerLogin
+    permission_classes = [AllowAny]
 
-    def get(self, request):
-        info = EKPJLogin.objects.all().values()
-        return Response({"Your Account Info": info})
-
-<<<<<<< Updated upstream
     def post(self, request):
-        serializer_post_project = EKPJSerializerLogin(data=request.data)
-        if serializer_post_project.is_valid():
-            EKPJ.objects.create(
-                username=serializer_post_project.data.get("username"),
-                password=serializer_post_project.data.get("password"),
-            )
-=======
-        # Log search term if provided
-        if search_term:
-            SearchLog.objects.create(term=search_term)
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-        # Filter and sort drivers
-        drivers = Driver.objects.all()
+        if not username or not password:
+            return Response({"error": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Apply search filters (for name_en, name_th, nickname, qr_code, and age)
-        if search_term:
-            try:
-                # Check if the search term is an integer and filter by round_id
-                search_int = int(search_term)
-                drivers = drivers.filter(id=search_int)
-            except ValueError:
-                rounds = rounds.filter(
-                    Q(name_en__icontains=search_term) |
-                    Q(name_th__icontains=search_term) |
-                    Q(nickname__icontains=search_term) |
-                    Q(qr_code__icontains=search_term) |  # If qr_code is stored as a string or number
-                    Q(age__icontains=search_term)  # If age is numeric but you want to search by it
-                )
->>>>>>> Stashed changes
+        # Authenticate the user using the provided credentials
+        user = authenticate(request, username=username, password=password)
 
-        project = EKPJ.objects.filter(username=request.data["username"]).values()
-        return Response({"Notification": "Your Login is Successful!", "Project": project})
+        if user is None:
+            return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 
+        # If credentials are valid, generate a JWT token
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
-class DriverViewSet(viewsets.ModelViewSet):
-    queryset = Driver.objects.all()
-    serializer_class = DriverSerializer
+        return Response({
+            'message': 'Login successful!',
+            'token': access_token  # Return the JWT token
+        }, status=status.HTTP_200_OK)
 
-# View for GET requests to list drivers
+@api_view(['POST'])
+def refresh_token(request):
+    refresh_token = request.data.get('refresh')
+    if not refresh_token:
+        return Response({"error": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        refresh = RefreshToken(refresh_token)
+        access_token = str(refresh.access_token)
+        return Response({
+            'access_token': access_token
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@method_decorator(csrf_exempt, name='dispatch')
 class DriverListView(APIView):
-    def get(self, request):
-        drivers = Driver.objects.all()
-        serializer = DriverSerializer(drivers, many=True)
-        return Response({"drivers": serializer.data}, status=status.HTTP_200_OK)
+    permission_classes = [permissions.IsAuthenticated]
 
-# View for POST requests to create a new driver
+    def get(self, request):
+        search_term = request.GET.get('search', '')
+        sort_by = request.GET.get('sort_by', 'Driver_ID')
+        order = request.GET.get('order', 'asc')
+
+        # Search functionality
+        drivers = Driver.objects.all()
+        if search_term:
+            drivers = drivers.filter(
+                Q(name_en__icontains=search_term) |
+                Q(name_th__icontains=search_term) |
+                Q(nickname__icontains=search_term) |
+                Q(qr_code__icontains=search_term) |
+                Q(age__icontains=search_term)
+            )
+
+        # Sorting functionality
+        if order == 'desc':
+            sort_by = f'-{sort_by}'
+
+        drivers = drivers.order_by(sort_by)
+        serializer = DriverSerializer(drivers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@permission_classes([permissions.IsAuthenticated])
 class DriverCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
         serializer = DriverSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Driver created successfully!", "data": serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Driver created successfully!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< Updated upstream
-    
-@api_view(['PUT'])
-=======
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
->>>>>>> Stashed changes
 def edit_driver(request, pk):
     try:
         driver = Driver.objects.get(pk=pk)
     except Driver.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Driver not found"}, status=status.HTTP_404_NOT_FOUND)
 
-<<<<<<< Updated upstream
-    if request.method == 'PUT':
-        serializer = DriverSerializer(driver, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-=======
     serializer = DriverSerializer(driver, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -137,15 +168,6 @@ def delete_driver(request, pk):
         return Response({"message": "Driver deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
     except Driver.DoesNotExist:
         return Response({"error": "Driver not found"}, status=status.HTTP_404_NOT_FOUND)
-
-user = User.objects.get(username="newuser365")
-
-# Check if entered password matches the hashed password
-if user.check_password('password135'):
-    print("Password is correct")
-else:
-    print("Password is incorrect")
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RoundListView(APIView):
@@ -239,4 +261,4 @@ def delete_round(request, pk):
         return Response({"message": "Round deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
     except Round.DoesNotExist:
         return Response({"error": "Round not found"}, status=status.HTTP_404_NOT_FOUND)
->>>>>>> Stashed changes
+#>>>>>>> Stashed changes
