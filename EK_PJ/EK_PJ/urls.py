@@ -25,17 +25,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 #=======
     # Registration
-    path('api/register/get/', views.EK_Champ_GetView.as_view(), name='register-get'),
-    path('api/register/post/', views.EK_Champ_PostView.as_view(), name='register-post'),
+    path('api/register/get/', views.RegisterGetView.as_view(), name='register-get'),
+    path('api/register/post/', views.RegisterPostView.as_view(), name='register-post'),
 
     # Login
-    path('api/login/', views.EK_Champ_LoginView.as_view(), name='login'),
+    path('api/login/', views.LoginView.as_view(), name='login'),
 
     # Driver Endpoints
     path('api/drivers/list/', views.DriverListView.as_view(), name='driver-list'),
     path('api/drivers/create/', views.DriverCreateView.as_view(), name='driver-create'),
-    path('api/drivers/edit/?key=value/', views.edit_driver, name='edit-driver'),
-    path('api/drivers/delete/?key=value/', views.delete_driver, name='delete-driver'),
+    path('api/drivers/edit/<int:pk>/', views.edit_driver, name='edit-driver'),
+    path('api/drivers/delete/<int:pk>/', views.delete_driver, name='delete-driver'),
     path('api/drivers/list/?sort_by=name_en&order=asc', views.DriverListView.as_view(), name ='filter_by_name_en'),
     path('api/drivers/list/?sort_by=name_th&order=asc', views.DriverListView.as_view(),name ='filter_by_name_th'),
     path('api/drivers/list/?sort_by=dob&order=asc', views.DriverListView.as_view(),name ='filter_by_bod'),
@@ -43,7 +43,7 @@ urlpatterns = [
     path('api/drivers/list/?sort_by=age&order=desc', views.DriverListView.as_view(),name ='filter_by_age'),
     path('api/drivers/list/?sort_by=name_th&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
     path('api/drivers/list/?sort_by=nickname&order=asc', views.DriverListView.as_view(),name ='filter_by_qr_code'),
-    path('api/drivers/list/?search=value', views.DriverListView.as_view(),name ='search'),
+    path('api/drivers/list/?search=<value>', views.DriverListView.as_view(),name ='search'),
     # List and filter rounds
     path('api/rounds/list/', views.RoundListView.as_view(), name='round-list'),
     
